@@ -113,6 +113,7 @@
 
         .search-dropdown {
             position: relative;
+            grid-column: 1 / -1;
         }
 
         input, textarea {
@@ -134,17 +135,17 @@
         .dropdown-list {
             position: absolute;
             top: 100%;
-            left: 0;
-            right: 0;
-            background: #f8fafc;
+            left: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
             border: 3px solid #667eea;
             border-top: none;
-            border-radius: 0 0 10px 10px;
-            max-height: 200px;
+            border-radius: 0 0 12px 12px;
+            max-height: 400px;
             overflow-y: auto;
             display: none;
             z-index: 1000;
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
             margin-top: -2px;
         }
 
@@ -153,14 +154,17 @@
         }
 
         .dropdown-item {
-            padding: 12px;
+            padding: 14px;
             cursor: pointer;
-            transition: background 0.2s;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 13px;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+            font-size: 14px;
             word-wrap: break-word;
             white-space: normal;
-            line-height: 1.4;
+            line-height: 1.5;
+            background: white;
+            margin: 4px 8px;
+            border-radius: 8px;
         }
 
         .dropdown-item:last-child {
@@ -169,6 +173,8 @@
 
         .dropdown-item:hover {
             background: #e0e7ff;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
         }
 
         .no-results {
