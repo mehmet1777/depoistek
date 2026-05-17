@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGT Filtre - Depo Sipariş Formu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .product-list {
+            margin-bottom: 20px;
+        }
+
+        .product-item {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .product-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .product-item-title {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 14px;
+        }
+
+        .remove-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+        }
+
+        .product-item-fields {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+        }
+
+        .search-dropdown {
+            position: relative;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #667eea;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-list.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f0f9ff;
+        }
+
+        .no-results {
+            padding: 15px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stok-info {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 8px;
+            display: none;
+            font-size: 13px;
+        }
+
+        .stok-info.show {
+            display: block;
+        }
+
+        .stok-info p {
+            margin: 0;
+            font-weight: 600;
+            color: #991b1b;
+        }
+
+        .add-product-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #667eea;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .add-product-btn:hover {
+            background: #f0f9ff;
+            border-color: #764ba2;
+            color: #764ba2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 2px solid #10b981;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 MGT Filtre</h1>
+            <p>Depo Sipariş Formu</p>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="siparisForm">
+            <div class="product-list" id="productList"></div>
+
+            <button type="button" class="add-product-btn" id="addProductBtn">
+                + Ürün Ekle
+            </button>
+
+            <div class="form-group">
+                <label for="bolum">Bölüm <span class="required">*</span></label>
+                <input type="text" id="bolum" placeholder="Örn: Montaj Bölümü" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notlar">Notlar (Opsiyonel)</label>
+                <textarea id="notlar" placeholder="Varsa ek notlarınızı yazın..."></textarea>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">
+                ✓ Siparişi Gönder
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">Sipariş gönderiliyor...</p>
+        </div>
+
+        <div class="footer">
+            <strong>MGT Filtre</strong> • Depo Yönetim Sistemi
+        </div>
+    </div>
+
+    <script>
+        // SABİT API URL (Domain ile)
+        const API_URL = 'https://api.depoistek.com.tr';
+
+        const form = document.getElementById('siparisForm');
+        const productList = document.getElementById('productList');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const bolumInput = document.getElementById('bolum');
+        const notlarInput = document.getElementById('notlar');
+        const alert = document.getElementById('alert');
+        const loading = document.getElementById('loading');
+        const submitBtn = document.getElementById('submitBtn');
+
+        let stokData = {};
+        let productCounter = 0;
+
+        async function loadStok() {
+            try {
+                const response = await fetch(`${API_URL}/stok`, {
+                    headers: { 'ngrok-skip-browser-warning': 'true' }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    stokData = data.stok;
+                    addProduct();
+                }
+            } catch (error) {
+                showAlert('Stok listesi yüklenemedi. Lütfen sayfayı yenileyin.', 'error');
+            }
+        }
+
+        function addProduct() {
+            productCounter++;
+            const productId = `product-${productCounter}`;
+            
+            const productItem = document.createElement('div');
+            productItem.className = 'product-item';
+            productItem.id = productId;
+            productItem.innerHTML = `
+                <div class="product-item-header">
+                    <span class="product-item-title">Ürün ${productCounter}</span>
+                    ${productCounter > 1 ? `<button type="button" class="remove-btn" onclick="removeProduct('${productId}')">✕ Sil</button>` : ''}
+                </div>
+                <div class="product-item-fields">
+                    <div>
+                        <div class="search-dropdown">
+                            <input 
+                                type="text" 
+                                class="urun-search" 
+                                data-id="${productId}"
+                                placeholder="🔍 Ürün adı yazın..."
+                                autocomplete="off"
+                                required
+                            >
+                            <div class="dropdown-list" id="dropdown-${productId}"></div>
+                        </div>
+                        <input type="hidden" class="urun-hidden" data-id="${productId}">
+                        <div class="stok-info" id="stok-${productId}"></div>
+                    </div>
+                    <div>
+                        <input 
+                            type="number" 
+                            class="miktar-input" 
+                            data-id="${productId}"
+                            min="1" 
+                            placeholder="Miktar"
+                            required
+                        >
+                    </div>
+                </div>
+            `;
+            
+            productList.appendChild(productItem);
+            setupProductEvents(productId);
+        }
+
+        function removeProduct(productId) {
+            document.getElementById(productId)?.remove();
+        }
+
+        function setupProductEvents(productId) {
+            const searchInput = document.querySelector(`.urun-search[data-id="${productId}"]`);
+            const hiddenInput = document.querySelector(`.urun-hidden[data-id="${productId}"]`);
+            const dropdownList = document.getElementById(`dropdown-${productId}`);
+            const miktarInput = document.querySelector(`.miktar-input[data-id="${productId}"]`);
+            const stokInfo = document.getElementById(`stok-${productId}`);
+
+            let filteredProducts = [];
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                if (searchTerm.length === 0) {
+                    dropdownList.classList.remove('show');
+                    hiddenInput.value = '';
+                    stokInfo.classList.remove('show');
+                    return;
+                }
+
+                filteredProducts = Object.keys(stokData)
+                    .filter(urun => urun.toLowerCase().includes(searchTerm))
+                    .sort();
+
+                if (filteredProducts.length > 0) {
+                    dropdownList.innerHTML = filteredProducts.map(urun => 
+                        `<div class="dropdown-item" onclick="selectProduct('${urun}', '${productId}')">${urun}</div>`
+                    ).join('');
+                    dropdownList.classList.add('show');
+                } else {
+                    dropdownList.innerHTML = '<div class="no-results">🔍 Sonuç bulunamadı</div>';
+                    dropdownList.classList.add('show');
+                }
+            });
+
+            miktarInput.addEventListener('input', function() {
+                const urun = hiddenInput.value;
+                const miktar = parseInt(this.value);
+                
+                if (urun && miktar && stokData[urun] !== undefined) {
+                    if (miktar > stokData[urun]) {
+                        stokInfo.className = 'stok-info show';
+                        stokInfo.innerHTML = `<p>⚠️ Yetersiz stok! Stokta sadece ${stokData[urun]} adet var</p>`;
+                    } else {
+                        stokInfo.classList.remove('show');
+                    }
+                }
+            });
+        }
+
+        function selectProduct(urun, productId) {
+            const searchInput = document.querySelector(`.urun-search[data-id="${productId}"]`);
+            const hiddenInput = document.querySelector(`.urun-hidden[data-id="${productId}"]`);
+            const dropdownList = document.getElementById(`dropdown-${productId}`);
+            const stokInfo = document.getElementById(`stok-${productId}`);
+            
+            searchInput.value = urun;
+            hiddenInput.value = urun;
+            dropdownList.classList.remove('show');
+            stokInfo.classList.remove('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-dropdown')) {
+                document.querySelectorAll('.dropdown-list').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            }
+        });
+
+        addProductBtn.addEventListener('click', addProduct);
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const urunInputs = document.querySelectorAll('.urun-hidden');
+            const miktarInputs = document.querySelectorAll('.miktar-input');
+            
+            const urunler = [];
+            let hasError = false;
+            
+            for (let i = 0; i < urunInputs.length; i++) {
+                const urun = urunInputs[i].value;
+                const miktar = parseInt(miktarInputs[i].value);
+                
+                if (!urun || !miktar) {
+                    showAlert('❌ Lütfen tüm ürünleri ve miktarları doldurun!', 'error');
+                    hasError = true;
+                    break;
+                }
+                
+                if (stokData[urun] < miktar) {
+                    showAlert(`❌ ${urun} için yetersiz stok! Stokta sadece ${stokData[urun]} adet var`, 'error');
+                    hasError = true;
+                    break;
+                }
+                
+                urunler.push({
+                    urun: urun,
+                    miktar: miktar
+                });
+            }
+            
+            if (hasError) return;
+            
+            const siparis = {
+                urunler: urunler,
+                bolum: bolumInput.value,
+                notlar: notlarInput.value,
+                siparis_veren: 'Web Formu'
+            };
+            
+            loading.classList.add('show');
+            submitBtn.disabled = true;
+            alert.classList.remove('show');
+
+            try {
+                const response = await fetch(`${API_URL}/siparis`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    },
+                    body: JSON.stringify(siparis)
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.detail || 'Sipariş oluşturulamadı');
+                }
+                
+                showAlert(`✓ ${urunler.length} ürünlü sipariş başarıyla oluşturuldu!`, 'success');
+                productList.innerHTML = '';
+                productCounter = 0;
+                form.reset();
+                await loadStok();
+                
+            } catch (error) {
+                showAlert(`❌ Hata: ${error.message}`, 'error');
+            } finally {
+                loading.classList.remove('show');
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showAlert(message, type) {
+            alert.textContent = message;
+            alert.className = `alert ${type} show`;
+            setTimeout(() => alert.classList.remove('show'), 15000);
+        }
+
+        function changeApiUrl() {
+            showApiUrlPrompt();
+        }
+        
+        // Mevcut API URL'ini göster
+        if (API_URL) {
+            document.getElementById('currentApiUrl').textContent = '🔗 Bağlı: ' + API_URL;
+        }
+
+        loadStok();
+    </script>
+</body>
+</html>
