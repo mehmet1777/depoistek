@@ -52,25 +52,26 @@
             margin-bottom: 20px;
         }
 
+        .product-wrapper {
+            display: grid;
+            grid-template-columns: 50px 1fr 45px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .product-item-title {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 14px;
+            text-align: left;
+        }
+
         .product-item {
             background: #f8fafc;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             padding: 12px;
-            margin-bottom: 10px;
-        }
-
-        .product-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .product-item-title {
-            font-weight: 600;
-            color: #667eea;
-            font-size: 13px;
         }
 
         .remove-btn {
@@ -78,14 +79,17 @@
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 6px 8px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
+            font-weight: 700;
+            width: 100%;
         }
 
         .remove-btn:hover {
             background: #dc2626;
+            transform: scale(1.05);
         }
 
         .product-item-fields {
@@ -388,57 +392,57 @@
             productCounter++;
             const productId = `product-${productCounter}`;
             
-            const productItem = document.createElement('div');
-            productItem.className = 'product-item';
-            productItem.id = productId;
-            productItem.innerHTML = `
-                <div class="product-item-header">
-                    <span class="product-item-title">Ürün ${productCounter}</span>
-                    ${productCounter > 1 ? `<button type="button" class="remove-btn" onclick="removeProduct('${productId}')">✕ Sil</button>` : ''}
-                </div>
-                <div class="product-item-fields">
-                    <div>
-                        <div class="search-dropdown">
+            const productWrapper = document.createElement('div');
+            productWrapper.className = 'product-wrapper';
+            productWrapper.id = `wrapper-${productId}`;
+            productWrapper.innerHTML = `
+                <span class="product-item-title">Ürün ${productCounter}</span>
+                <div class="product-item" id="${productId}">
+                    <div class="product-item-fields">
+                        <div>
+                            <div class="search-dropdown">
+                                <input 
+                                    type="text" 
+                                    class="urun-search" 
+                                    data-id="${productId}"
+                                    placeholder="🔍 Ürün adı yazın..."
+                                    autocomplete="off"
+                                    required
+                                >
+                                <div class="dropdown-list" id="dropdown-${productId}"></div>
+                            </div>
+                            <input type="hidden" class="urun-hidden" data-id="${productId}">
+                            <div class="stok-info" id="stok-${productId}"></div>
+                        </div>
+                        <div>
                             <input 
-                                type="text" 
-                                class="urun-search" 
+                                type="number" 
+                                class="miktar-input" 
                                 data-id="${productId}"
-                                placeholder="🔍 Ürün adı yazın..."
-                                autocomplete="off"
+                                min="1" 
+                                placeholder="Miktar"
                                 required
                             >
-                            <div class="dropdown-list" id="dropdown-${productId}"></div>
                         </div>
-                        <input type="hidden" class="urun-hidden" data-id="${productId}">
-                        <div class="stok-info" id="stok-${productId}"></div>
-                    </div>
-                    <div>
-                        <input 
-                            type="number" 
-                            class="miktar-input" 
-                            data-id="${productId}"
-                            min="1" 
-                            placeholder="Miktar"
-                            required
-                        >
                     </div>
                 </div>
+                ${productCounter > 1 ? `<button type="button" class="remove-btn" onclick="removeProduct('${productId}')">×</button>` : '<div></div>'}
             `;
             
-            productList.appendChild(productItem);
+            productList.appendChild(productWrapper);
             setupProductEvents(productId);
-            updateProductNumbers();  // Numaraları güncelle
+            updateProductNumbers();
         }
 
         function removeProduct(productId) {
-            document.getElementById(productId)?.remove();
+            document.getElementById(`wrapper-${productId}`)?.remove();
             updateProductNumbers();
         }
         
         function updateProductNumbers() {
-            const products = document.querySelectorAll('.product-item');
-            products.forEach((product, index) => {
-                const title = product.querySelector('.product-item-title');
+            const wrappers = document.querySelectorAll('.product-wrapper');
+            wrappers.forEach((wrapper, index) => {
+                const title = wrapper.querySelector('.product-item-title');
                 if (title) {
                     title.textContent = `Ürün ${index + 1}`;
                 }
