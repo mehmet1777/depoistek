@@ -575,15 +575,6 @@
             setTimeout(() => alert.classList.remove('show'), 15000);
         }
 
-        function changeApiUrl() {
-            showApiUrlPrompt();
-        }
-        
-        // Mevcut API URL'ini göster
-        if (API_URL) {
-            document.getElementById('currentApiUrl').textContent = '🔗 Bağlı: ' + API_URL;
-        }
-
         loadStok();
     </script>
 </body>
