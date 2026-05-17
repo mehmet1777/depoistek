@@ -54,38 +54,39 @@
 
         .product-wrapper {
             display: grid;
-            grid-template-columns: 60px 1fr 60px;
+            grid-template-columns: 45px 1fr 50px;
             gap: 0;
             align-items: stretch;
             margin-bottom: 10px;
             background: #f8fafc;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            overflow: hidden;
         }
 
         .product-item-title {
             font-weight: 700;
             color: #667eea;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
             background: #e0e7ff;
-            padding: 12px 8px;
+            padding: 12px 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 8px 0 0 8px;
         }
 
         .product-item {
             background: white;
-            padding: 12px;
+            padding: 10px;
+            position: relative;
         }
 
         .remove-btn {
             background: #fee2e2;
             color: #ef4444;
             border: none;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 700;
@@ -96,6 +97,7 @@
             align-items: center;
             justify-content: center;
             line-height: 1.2;
+            border-radius: 0 8px 8px 0;
         }
 
         .remove-btn:hover {
@@ -106,7 +108,7 @@
         .product-item-fields {
             display: grid;
             grid-template-columns: 1.8fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
 
         .search-dropdown {
@@ -115,10 +117,10 @@
 
         input, textarea {
             width: 100%;
-            padding: 10px 12px;
+            padding: 10px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.3s;
             font-family: inherit;
         }
@@ -143,6 +145,7 @@
             display: none;
             z-index: 1000;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-top: -2px;
         }
 
         .dropdown-list.show {
@@ -150,11 +153,11 @@
         }
 
         .dropdown-item {
-            padding: 10px 12px;
+            padding: 10px;
             cursor: pointer;
             transition: background 0.2s;
             border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .dropdown-item:last-child {
