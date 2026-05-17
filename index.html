@@ -423,6 +423,17 @@
 
         function removeProduct(productId) {
             document.getElementById(productId)?.remove();
+            updateProductNumbers();
+        }
+        
+        function updateProductNumbers() {
+            const products = document.querySelectorAll('.product-item');
+            products.forEach((product, index) => {
+                const title = product.querySelector('.product-item-title');
+                if (title) {
+                    title.textContent = `Ürün ${index + 1}`;
+                }
+            });
         }
 
         function setupProductEvents(productId) {
