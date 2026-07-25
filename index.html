@@ -13,36 +13,28 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #0a1929 0%, #0f1c2e 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: #e3f2fd;
         }
 
         .container {
-            background: rgba(15, 28, 46, 0.95);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(33, 150, 243, 0.1);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 900px;
             width: 100%;
-            padding: 0;
-            max-height: 90vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            padding: 25px;
+            max-height: 95vh;
+            overflow: visible;
+            position: relative;
         }
 
         .header {
-            background: rgba(13, 27, 42, 0.8);
-            padding: 20px 30px;
-            border-bottom: 1px solid rgba(33, 150, 243, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            display: none;
         }
 
         .header-icon {
@@ -78,38 +70,46 @@
         }
 
         .product-list {
-            margin-bottom: 25px;
+            margin-bottom: 0;
+            position: relative;
         }
 
         .product-wrapper {
-            background: rgba(13, 27, 42, 0.6);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            background: white;
+            border: 2px solid #e9ecef;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 12px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
             position: relative;
             transition: all 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
 
         .product-wrapper:hover {
-            border-color: rgba(33, 150, 243, 0.4);
-            background: rgba(13, 27, 42, 0.8);
+            border-color: #667eea;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
         }
 
         .product-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .product-item-title {
-            font-weight: 600;
-            color: #2196F3;
-            font-size: 14px;
+            font-weight: 700;
+            color: #667eea;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            margin-bottom: 0;
+        }
+
+        .product-item {
+            position: relative;
         }
 
         .product-item-title::before {
@@ -122,30 +122,37 @@
         }
 
         .remove-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
+            background: transparent;
+            color: #dc3545;
+            border: none;
+            padding: 4px;
+            border-radius: 50%;
+            font-size: 20px;
             cursor: pointer;
             transition: all 0.2s;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            line-height: 1;
+            width: 28px;
+            height: 28px;
         }
 
         .remove-btn:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.5);
-            transform: translateY(-1px);
+            background: rgba(220, 53, 69, 0.1);
+            transform: scale(1.15);
         }
 
         .product-item-fields {
             display: grid;
-            grid-template-columns: 1.8fr 1fr;
-            gap: 6px;
+            grid-template-columns: 2.5fr 0.95fr auto;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .product-number {
+            display: none;
         }
 
         .search-dropdown {
@@ -155,12 +162,14 @@
 
         input, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 8px 10px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 14px;
             transition: all 0.3s;
             font-family: inherit;
+            background: white;
+            color: #333;
         }
 
         input:focus, textarea:focus {
@@ -178,12 +187,32 @@
             border: 3px solid #667eea;
             border-top: none;
             border-radius: 0 0 12px 12px;
-            max-height: 400px;
+            max-height: 60vh;
             overflow-y: auto;
             display: none;
-            z-index: 1000;
+            z-index: 99999;
             box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
             margin-top: -2px;
+            padding-bottom: 8px;
+        }
+        
+        /* Dropdown scroll bar */
+        .dropdown-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb:hover {
+            background: #5568d3;
         }
 
         .dropdown-list.show {
@@ -243,16 +272,16 @@
 
         .add-product-btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: #22C55E;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             float: right;
             box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
         }
@@ -265,36 +294,79 @@
         
         .product-list-container {
             clear: both;
+            margin-bottom: 15px;
+            padding-right: 5px;
+            position: relative;
+        }
+        
+        .product-list {
+            margin-bottom: 0;
+            position: relative;
+            max-height: calc(95vh - 350px);
+            overflow: visible;
+        }
+            overflow-y: auto;
+            overflow-x: visible;
+        }
+
+        .product-list {
+            margin-bottom: 0;
+            max-height: calc(95vh - 350px);
+            overflow-y: auto;
+            overflow-x: visible;
+        }
+
+        /* Özel scroll bar */
+        .product-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .product-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .product-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .product-list::-webkit-scrollbar-thumb:hover {
+            background: #5568d3;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
         }
 
         label {
             display: block;
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
-            font-size: 14px;
+            margin-bottom: 6px;
+            font-size: 13px;
         }
 
         textarea {
             resize: vertical;
-            min-height: 60px;
+            min-height: 50px;
         }
 
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            z-index: 1;
         }
 
         .btn:hover {
@@ -367,6 +439,8 @@
             border-top: 2px solid #e0e0e0;
             color: #666;
             font-size: 13px;
+            position: relative;
+            z-index: 1;
         }
 
         .footer strong {
@@ -375,7 +449,7 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 30px 15px;
+                padding: 20px 15px;
             }
 
             body {
@@ -384,8 +458,45 @@
                 padding-top: 20px;
             }
 
-            .header {
+            .product-wrapper {
+                padding: 10px 12px;
+                padding-left: 12px;
+            }
+
+            .product-number {
                 display: none;
+            }
+
+            .product-item-title {
+                font-size: 14px;
+            }
+
+            input, textarea {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 15px;
+            }
+
+            .add-product-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .product-item-fields {
+                gap: 8px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                font-size: 13px;
+                margin-bottom: 6px;
             }
         }
     </style>
@@ -474,7 +585,7 @@
             productWrapper.className = 'product-wrapper';
             productWrapper.id = `wrapper-${productId}`;
             productWrapper.innerHTML = `
-                <span class="product-item-title">Ürün ${productCounter}</span>
+                <div class="product-number">${productCounter}</div>
                 <div class="product-item" id="${productId}">
                     <div class="product-item-fields">
                         <div>
@@ -499,9 +610,9 @@
                                 required
                             >
                         </div>
+                        ${productCounter > 1 ? `<button type="button" class="remove-btn" onclick="removeProduct('${productId}')">✕</button>` : '<div></div>'}
                     </div>
                 </div>
-                ${productCounter > 1 ? `<button type="button" class="remove-btn" onclick="removeProduct('${productId}')"><span style="font-size: 18px;">×</span><span>Sil</span></button>` : '<div></div>'}
                 <div class="dropdown-list" id="dropdown-${productId}"></div>
             `;
             
@@ -518,9 +629,9 @@
         function updateProductNumbers() {
             const wrappers = document.querySelectorAll('.product-wrapper');
             wrappers.forEach((wrapper, index) => {
-                const title = wrapper.querySelector('.product-item-title');
-                if (title) {
-                    title.textContent = `Ürün ${index + 1}`;
+                const numberDiv = wrapper.querySelector('.product-number');
+                if (numberDiv) {
+                    numberDiv.textContent = `${index + 1}`;
                 }
             });
         }
@@ -533,6 +644,16 @@
             const stokInfo = document.getElementById(`stok-${productId}`);
 
             let filteredProducts = [];
+
+            searchInput.addEventListener('focus', function() {
+                // Bu ürünün wrapper'ına en yüksek z-index ver
+                const allWrappers = document.querySelectorAll('.product-wrapper');
+                allWrappers.forEach(w => w.style.zIndex = '1');
+                document.getElementById(`wrapper-${productId}`).style.zIndex = '10';
+                
+                // Dropdown max-height'i dinamik hesapla
+                updateDropdownMaxHeight(searchInput, dropdownList);
+            });
 
             searchInput.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase().trim();
@@ -553,6 +674,7 @@
                         `<div class="dropdown-item" onclick="selectProduct('${urun}', '${productId}')">${urun}</div>`
                     ).join('');
                     dropdownList.classList.add('show');
+                    updateDropdownMaxHeight(searchInput, dropdownList);
                 } else {
                     dropdownList.innerHTML = '<div class="no-results">🔍 Sonuç bulunamadı</div>';
                     dropdownList.classList.add('show');
@@ -572,6 +694,20 @@
                     }
                 }
             });
+        }
+
+        function updateDropdownMaxHeight(inputElement, dropdownElement) {
+            const inputRect = inputElement.getBoundingClientRect();
+            const bolumLabel = document.querySelector('label[for="bolum"]');
+            
+            if (bolumLabel) {
+                const bolumRect = bolumLabel.getBoundingClientRect();
+                const availableSpace = bolumRect.top - inputRect.bottom - 20; // 20px güvenlik boşluğu
+                
+                if (availableSpace > 100) {
+                    dropdownElement.style.maxHeight = `${availableSpace}px`;
+                }
+            }
         }
 
         function selectProduct(urun, productId) {
