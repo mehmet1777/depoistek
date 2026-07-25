@@ -161,7 +161,7 @@
             grid-column: 1 / -1;
         }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 8px 10px;
             border: 2px solid #e0e0e0;
@@ -173,7 +173,7 @@
             color: #333;
         }
 
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -525,7 +525,9 @@
 
             <div class="form-group">
                 <label for="bolum">Bölüm <span class="required">*</span></label>
-                <input type="text" id="bolum" placeholder="Örn: Montaj Bölümü" required>
+                <select id="bolum" required>
+                    <option value="">Bölüm seçin...</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -565,6 +567,7 @@
 
         let stokData = {};
         let productCounter = 0;
+        let bolumlerData = [];
 
         async function loadStok() {
             try {
@@ -578,6 +581,27 @@
                 }
             } catch (error) {
                 showAlert('Stok listesi yüklenemedi. Lütfen sayfayı yenileyin.', 'error');
+            }
+        }
+
+        async function loadBolumler() {
+            try {
+                const response = await fetch(`${API_URL}/bolumler`, {
+                    headers: { 'ngrok-skip-browser-warning': 'true' }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    bolumlerData = data.bolumler;
+                    const bolumSelect = document.getElementById('bolum');
+                    bolumlerData.forEach(bolum => {
+                        const option = document.createElement('option');
+                        option.value = bolum;
+                        option.textContent = bolum;
+                        bolumSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Bölümler yüklenemedi:', error);
             }
         }
 
@@ -833,6 +857,7 @@
         }
 
         loadStok();
+        loadBolumler();
     </script>
 </body>
 </html>
