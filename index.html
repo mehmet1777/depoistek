@@ -179,10 +179,7 @@
         }
 
         .dropdown-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
+            position: fixed;
             background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
             border: 3px solid #667eea;
             border-top: none;
@@ -190,9 +187,8 @@
             max-height: 60vh;
             overflow-y: auto;
             display: none;
-            z-index: 99999;
+            z-index: 999999;
             box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
-            margin-top: -2px;
             padding-bottom: 8px;
         }
         
@@ -303,15 +299,6 @@
             margin-bottom: 0;
             position: relative;
             max-height: calc(95vh - 350px);
-            overflow: visible;
-        }
-            overflow-y: auto;
-            overflow-x: visible;
-        }
-
-        .product-list {
-            margin-bottom: 0;
-            max-height: calc(95vh - 350px);
             overflow-y: auto;
             overflow-x: visible;
         }
@@ -336,9 +323,25 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 0;
             position: relative;
             z-index: 1;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .form-group:not(:last-of-type) {
+            margin-bottom: 0;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .form-group:last-of-type {
+            border-radius: 0 0 8px 8px;
+        }
+        
+        form > .form-group:first-of-type {
+            border-radius: 8px 8px 0 0;
         }
 
         label {
@@ -613,16 +616,23 @@
                         ${productCounter > 1 ? `<button type="button" class="remove-btn" onclick="removeProduct('${productId}')">✕</button>` : '<div></div>'}
                     </div>
                 </div>
-                <div class="dropdown-list" id="dropdown-${productId}"></div>
             `;
             
             productList.appendChild(productWrapper);
+            
+            // Dropdown'ı body'ye ekle
+            const dropdownList = document.createElement('div');
+            dropdownList.className = 'dropdown-list';
+            dropdownList.id = `dropdown-${productId}`;
+            document.body.appendChild(dropdownList);
+            
             setupProductEvents(productId);
             updateProductNumbers();
         }
 
         function removeProduct(productId) {
             document.getElementById(`wrapper-${productId}`)?.remove();
+            document.getElementById(`dropdown-${productId}`)?.remove(); // Dropdown'ı da sil
             updateProductNumbers();
         }
         
@@ -645,14 +655,23 @@
 
             let filteredProducts = [];
 
+            // Dropdown pozisyonunu ayarla
+            function positionDropdown() {
+                const rect = searchInput.getBoundingClientRect();
+                dropdownList.style.top = `${rect.bottom - 2}px`;
+                dropdownList.style.left = `${rect.left}px`;
+                dropdownList.style.width = `${rect.width}px`;
+            }
+
             searchInput.addEventListener('focus', function() {
                 // Bu ürünün wrapper'ına en yüksek z-index ver
                 const allWrappers = document.querySelectorAll('.product-wrapper');
                 allWrappers.forEach(w => w.style.zIndex = '1');
                 document.getElementById(`wrapper-${productId}`).style.zIndex = '10';
                 
-                // Dropdown max-height'i dinamik hesapla
-                updateDropdownMaxHeight(searchInput, dropdownList);
+                if (dropdownList.classList.contains('show')) {
+                    positionDropdown();
+                }
             });
 
             searchInput.addEventListener('input', function() {
@@ -673,11 +692,26 @@
                     dropdownList.innerHTML = filteredProducts.map(urun => 
                         `<div class="dropdown-item" onclick="selectProduct('${urun}', '${productId}')">${urun}</div>`
                     ).join('');
+                    positionDropdown();
                     dropdownList.classList.add('show');
-                    updateDropdownMaxHeight(searchInput, dropdownList);
                 } else {
                     dropdownList.innerHTML = '<div class="no-results">🔍 Sonuç bulunamadı</div>';
+                    positionDropdown();
                     dropdownList.classList.add('show');
+                }
+            });
+
+            // Scroll sırasında pozisyonu güncelle
+            productList.addEventListener('scroll', function() {
+                if (dropdownList.classList.contains('show')) {
+                    positionDropdown();
+                }
+            });
+
+            // Pencere resize olunca pozisyonu güncelle
+            window.addEventListener('resize', function() {
+                if (dropdownList.classList.contains('show')) {
+                    positionDropdown();
                 }
             });
 
@@ -696,20 +730,6 @@
             });
         }
 
-        function updateDropdownMaxHeight(inputElement, dropdownElement) {
-            const inputRect = inputElement.getBoundingClientRect();
-            const bolumLabel = document.querySelector('label[for="bolum"]');
-            
-            if (bolumLabel) {
-                const bolumRect = bolumLabel.getBoundingClientRect();
-                const availableSpace = bolumRect.top - inputRect.bottom - 20; // 20px güvenlik boşluğu
-                
-                if (availableSpace > 100) {
-                    dropdownElement.style.maxHeight = `${availableSpace}px`;
-                }
-            }
-        }
-
         function selectProduct(urun, productId) {
             const searchInput = document.querySelector(`.urun-search[data-id="${productId}"]`);
             const hiddenInput = document.querySelector(`.urun-hidden[data-id="${productId}"]`);
@@ -723,7 +743,7 @@
         }
 
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-dropdown')) {
+            if (!e.target.closest('.urun-search') && !e.target.closest('.dropdown-list')) {
                 document.querySelectorAll('.dropdown-list').forEach(dropdown => {
                     dropdown.classList.remove('show');
                 });
